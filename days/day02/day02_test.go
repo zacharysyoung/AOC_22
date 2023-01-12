@@ -2,30 +2,71 @@ package day2
 
 import (
 	"fmt"
+	"reflect"
 	"testing"
 )
 
-func TestMatch(t *testing.T) {
+const sampleInput = `
+A Y
+B X
+C Z
+`
+
+func TestReadGuide(t *testing.T) {
+	want := []strategy{
+		{"A", "Y"},
+		{"B", "X"},
+		{"C", "Z"},
+	}
+	got := readGuide(sampleInput)
+	if !reflect.DeepEqual(got, want) {
+		t.Errorf("getMatches(%q) = %v; want %v", input, got, want)
+	}
+}
+
+func TestThrowDown_1(t *testing.T) {
 	for _, tc := range []struct {
-		them, you string
-		score     score
-		res       outcome
+		x    strategy
+		want score
 	}{
-		{"A", "Y", 8, win},
-		{"B", "X", 1, lose},
-		{"C", "Z", 6, draw},
+		{strategy{"A", "Y"}, 8},
+		{strategy{"B", "X"}, 1},
+		{strategy{"C", "Z"}, 6},
 	} {
-		score, res := throwDown(tc.them, tc.you)
-		if score != tc.score || res != tc.res {
-			t.Errorf("throwDown(%s, %s) = %d, %d; want %d, %d", tc.them, tc.you, score, res, tc.score, tc.res)
+		if got := throwStrategy_1(tc.x); got != tc.want {
+			t.Errorf("throwDown(%+v) = %d; want %d", tc.x, got, tc.want)
 		}
 	}
+}
 
-	var totalScore score
-	for _, match := range getMatches(input) {
-		myScore, _ := throwDown(match.them, match.you)
-		totalScore += myScore
+func TestPlayGuide_1(t *testing.T) {
+	guide := readGuide(sampleInput)
+
+	want := score(15)
+	got := playGuide(guide, throwStrategy_1)
+
+	if got != want {
+		t.Errorf("playGuide_1 = %d; want %d", got, want)
 	}
 
-	fmt.Println(totalScore)
+	// Get value for real input
+	guide = readGuide(input)
+	got = playGuide(guide, throwStrategy_1)
+	fmt.Println("playGuide_1 real score:", got)
+}
+
+func TestPlayGuide_2(t *testing.T) {
+	guide := readGuide(sampleInput)
+
+	want := score(12)
+	got := playGuide(guide, throwStrategy_2)
+
+	if got != want {
+		t.Errorf("playGuide_2 = %d; want %d", got, want)
+	}
+
+	// Get value for real input
+	guide = readGuide(input)
+	got = playGuide(guide, throwStrategy_2)
+	fmt.Println("playGuide_2 real score:", got)
 }

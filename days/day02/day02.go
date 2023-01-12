@@ -28,10 +28,35 @@ const (
 
 type score int
 
-func throwDown(them, you string) (score, outcome) {
+type shapeRule struct {
+	beatenBy, beats shape
+}
+
+func getRule(x shape) shapeRule {
+	switch x {
+	case rock:
+		// paper beats rock beats scissor
+		return shapeRule{paper, scissor}
+	case scissor:
+		// rock beats scissor beats paper
+		return shapeRule{rock, paper}
+	default:
+		// scissor beats paper beats rock
+		return shapeRule{scissor, rock}
+	}
+}
+
+func playGuide(guide []strategy, thrower func(x strategy) score) (totalScore score) {
+	for _, x := range guide {
+		totalScore += thrower(x)
+	}
+	return
+}
+
+func throwStrategy_1(x strategy) score {
 	var theirs, yours shape
 
-	switch them {
+	switch x.col1 {
 	case "A":
 		theirs = rock
 	case "B":
@@ -40,7 +65,7 @@ func throwDown(them, you string) (score, outcome) {
 		theirs = scissor
 	}
 
-	switch you {
+	switch x.col2 {
 	case "X":
 		yours = rock
 	case "Y":
@@ -66,24 +91,61 @@ func throwDown(them, you string) (score, outcome) {
 		res = win
 	case yours == paper && theirs == rock:
 		res = win
+
 	default:
 		res = draw
 	}
 
-	return score(yours) + score(res), res
+	return score(yours) + score(res)
 }
 
-type match struct {
-	them, you string
+func throwStrategy_2(x strategy) score {
+	var theirShape shape
+	var yourPlay outcome
+	var yourShape shape
+
+	switch x.col1 {
+	case "A":
+		theirShape = rock
+	case "B":
+		theirShape = paper
+	case "C":
+		theirShape = scissor
+	}
+
+	switch x.col2 {
+	case "X":
+		yourPlay = lose
+	case "Y":
+		yourPlay = draw
+	case "Z":
+		yourPlay = win
+	}
+
+	rule := getRule(theirShape)
+
+	switch yourPlay {
+	case lose:
+		yourShape = rule.beats
+	case draw:
+		yourShape = theirShape
+	case win:
+		yourShape = rule.beatenBy
+	}
+
+	return score(yourShape) + score(yourPlay)
 }
 
-func getMatches(input string) (matches []match) {
+type strategy struct {
+	col1, col2 string
+}
+
+func readGuide(input string) (guide []strategy) {
 	for _, line := range strings.Split(input, "\n") {
 		if line == "" {
 			continue
 		}
-		thisMatch := strings.Split(line, " ")
-		matches = append(matches, match{thisMatch[0], thisMatch[1]})
+		guide = append(guide, strategy{line[0:1], line[2:3]})
 	}
 	return
 }
