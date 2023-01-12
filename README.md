@@ -1,3 +1,4 @@
+<!-- markdownlint-disable MD024 -->
 # [Advent of Code 2022](https://adventofcode.com/2022)
 
 ## Day 1: Calorie Counting
@@ -91,7 +92,7 @@ What would your total score be if everything goes exactly according to your stra
 
 Your puzzle answer was `14531`.
 
-### Part 2
+### Part Two
 
 The Elf finishes helping with the tent and sneaks back over to you. "Anyway, the second column says how the round needs to end: X means you need to lose, Y means you need to end the round in a draw, and Z means you need to win. Good luck!"
 
