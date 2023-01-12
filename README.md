@@ -1,4 +1,4 @@
-# Advent of Code 2022 (<https://adventofcode.com/2022>)
+# [Advent of Code 2022](https://adventofcode.com/2022)
 
 [Day 1][day01] | [Day 2][day02] | [Day 3][day03]
 
