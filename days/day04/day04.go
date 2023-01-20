@@ -35,22 +35,42 @@ func readInput(input string) (pairs []assignmentPair) {
 	return
 }
 
-func pairOverlaps(pair assignmentPair) bool {
-	// Arbitrarily assign sizes of assignments
-	smaller := pair.elf1
-	larger := pair.elf2
-
-	// Fix if arbitrary was wrong
-	if larger.upper-larger.lower < smaller.upper-smaller.lower {
-		smaller, larger = larger, smaller
+func pairTotallyOverlaps(pair assignmentPair) bool {
+	elf1, elf2 := pair.elf1, pair.elf2
+	switch {
+	case elf1.lower <= elf2.lower && elf1.upper >= elf2.upper:
+		return true
+	case elf2.lower <= elf1.lower && elf2.upper >= elf1.upper:
+		return true
+	default:
+		return false
 	}
-
-	return larger.lower <= smaller.lower && larger.upper >= smaller.upper
 }
 
-func findOverlapping(pairs []assignmentPair) (overlaps []assignmentPair) {
+func findTotalOverlaps(pairs []assignmentPair) (overlaps []assignmentPair) {
 	for _, pair := range pairs {
-		if pairOverlaps(pair) {
+		if pairTotallyOverlaps(pair) {
+			overlaps = append(overlaps, pair)
+		}
+	}
+	return
+}
+
+func pairPartiallyOverlaps(pair assignmentPair) bool {
+	elf1, elf2 := pair.elf1, pair.elf2
+	switch {
+	case elf1.lower <= elf2.lower && elf1.upper >= elf2.lower:
+		return true
+	case elf2.lower <= elf1.lower && elf2.upper >= elf1.lower:
+		return true
+	default:
+		return false
+	}
+}
+
+func findPartialOverlaps(pairs []assignmentPair) (overlaps []assignmentPair) {
+	for _, pair := range pairs {
+		if pairPartiallyOverlaps(pair) {
 			overlaps = append(overlaps, pair)
 		}
 	}

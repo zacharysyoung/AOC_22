@@ -31,35 +31,65 @@ func TestReadInput(t *testing.T) {
 	}
 }
 
-var sampleOverlaps = []assignmentPair{
+var sampleTotalOverlaps = []assignmentPair{
 	{assignment{2, 8}, assignment{3, 7}},
 	{assignment{6, 6}, assignment{4, 6}},
 }
 
-func TestSampleOverlaps(t *testing.T) {
+func TestSampleTotalOverlaps(t *testing.T) {
 	pairs := readInput(sampleInput)
-	overlaps := findOverlapping(pairs)
-
-	if !reflect.DeepEqual(overlaps, sampleOverlaps) {
-		t.Errorf("got duplicate items %v; want %v", overlaps, sampleOverlaps)
+	overlaps := findTotalOverlaps(pairs)
+	if !reflect.DeepEqual(overlaps, sampleTotalOverlaps) {
+		t.Errorf("got overlapping pairs %v; want %v", overlaps, sampleTotalOverlaps)
 	}
 }
 
-const sampleOverlapCount = 2
+const sampleTotalOverlapCount = 2
 
-func TestGetSampleCount(t *testing.T) {
+func TestGetSampleTotalCount(t *testing.T) {
 	pairs := readInput(sampleInput)
-	overlaps := findOverlapping(pairs)
+	overlaps := findTotalOverlaps(pairs)
 	got := getOverlapCount(overlaps)
-	if got != sampleOverlapCount {
-		t.Errorf("got overlap count of %d; want %d", got, sampleOverlapCount)
+	if got != sampleTotalOverlapCount {
+		t.Errorf("got overlap count of %d; want %d", got, sampleTotalOverlapCount)
 	}
 }
 
 func TestGetRealAnswer_1(t *testing.T) {
 	pairs := readInput(input)
-	overlaps := findOverlapping(pairs)
+	overlaps := findTotalOverlaps(pairs)
 	fmt.Println("Real answer 1:", getOverlapCount(overlaps))
+}
+
+var samplePartialOverlaps = []assignmentPair{
+	{assignment{5, 7}, assignment{7, 9}},
+	{assignment{2, 8}, assignment{3, 7}},
+	{assignment{6, 6}, assignment{4, 6}},
+	{assignment{2, 6}, assignment{4, 8}},
+}
+
+func TestSamplePartialOverlaps(t *testing.T) {
+	pairs := readInput(sampleInput)
+	overlaps := findPartialOverlaps(pairs)
+	if !reflect.DeepEqual(overlaps, samplePartialOverlaps) {
+		t.Errorf("got overlapping pairs %v; want %v", overlaps, samplePartialOverlaps)
+	}
+}
+
+const samplePartialOverlapCount = 4
+
+func TestGetSamplePartialCount(t *testing.T) {
+	pairs := readInput(sampleInput)
+	overlaps := findPartialOverlaps(pairs)
+	got := getOverlapCount(overlaps)
+	if got != samplePartialOverlapCount {
+		t.Errorf("got overlap count of %d; want %d", got, samplePartialOverlapCount)
+	}
+}
+func TestGetRealAnswer_2(t *testing.T) {
+	pairs := readInput(input)
+	overlaps := findPartialOverlaps(pairs)
+	fmt.Println("Real answer 2:", getOverlapCount(overlaps))
 }
 
 /*
