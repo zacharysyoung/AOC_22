@@ -1,6 +1,7 @@
 package day03
 
 import (
+	"fmt"
 	"reflect"
 	"testing"
 )
@@ -32,6 +33,7 @@ var sampleMoves = []move{
 
 func TestReadInput(t *testing.T) {
 	stacks, moves := readInput(sampleInput)
+	fmt.Println(stacks)
 	if !reflect.DeepEqual(stacks, sampleStacks) {
 		t.Errorf("got stacks %v; want %v", stacks, sampleStacks)
 	}

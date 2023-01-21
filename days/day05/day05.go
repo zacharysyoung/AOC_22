@@ -35,6 +35,7 @@ func readInput(input string) (stacks_ stacks, moves_ moves) {
 		if line == "" {
 			continue
 		}
+
 		if line[0:2] == " 1" {
 			rowCount = len(rawRows)
 
@@ -57,8 +58,10 @@ func readInput(input string) (stacks_ stacks, moves_ moves) {
 				}
 			}
 		}
-		if stackCount == 0 {
+
+		if rowCount == 0 {
 			rawRows = append(rawRows, line)
+			continue
 		}
 	}
 
