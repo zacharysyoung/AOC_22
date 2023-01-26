@@ -24,7 +24,7 @@ var sampleStacks = stacks{
 	3: {"P"},
 }
 
-var sampleMoves = []move{
+var sampleMoves = moves{
 	{1, 2, 1},
 	{3, 1, 3},
 	{2, 2, 1},
